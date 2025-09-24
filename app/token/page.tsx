@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function TokenPage() {
@@ -100,9 +101,9 @@ export default function TokenPage() {
             <div className="rounded-xl bg-white/70 px-4 py-3 text-xs shadow-sm ring-1 ring-black/5">
               Tip: tokens are anonymous by design. If you need to prove
               validity, use the{" "}
-              <a className="underline" href="/verify">
+              <Link className="underline" href="/verify">
                 Verifier
-              </a>
+              </Link>
               .
             </div>
           </div>
@@ -110,9 +111,9 @@ export default function TokenPage() {
           <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-black/5">
             <p>
               No token found. Start a new sign-in from{" "}
-              <a className="underline" href="/">
+              <Link className="underline" href="/">
                 Home
-              </a>
+              </Link>
               .
             </p>
           </div>

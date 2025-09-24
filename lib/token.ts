@@ -48,7 +48,7 @@ export function verifyOpaqueToken(
     const now = Math.floor(Date.now() / 1000);
     if (payload.exp <= now) return { ok: false, reason: "expired" };
     return { ok: true, payload };
-  } catch (e) {
+  } catch {
     return { ok: false, reason: "payload" };
   }
 }

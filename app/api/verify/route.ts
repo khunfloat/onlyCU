@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const result = verifyOpaqueToken(String(token), process.env.TOKEN_SECRET!);
     if (!result.ok) return NextResponse.json(result, { status: 400 });
     return NextResponse.json({ ok: true, payload: result.payload });
-  } catch (e) {
+  } catch {
     return NextResponse.json(
       { ok: false, reason: "bad_request" },
       { status: 400 }

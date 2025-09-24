@@ -1,9 +1,13 @@
 "use client";
 import { useState } from "react";
 
+type VerifyOk = { ok: true; payload: { iat: number; exp: number } };
+type VerifyErr = { ok: false; error: string };
+type VerifyResponse = VerifyOk | VerifyErr;
+
 export default function VerifyPage() {
   const [token, setToken] = useState("");
-  const [res, setRes] = useState<any>(null);
+  const [res, setRes] = useState<VerifyResponse | null>(null); // ✅ no any
   const [loading, setLoading] = useState(false);
 
   const check = async () => {
@@ -14,7 +18,7 @@ export default function VerifyPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
-      const data = await r.json();
+      const data: VerifyResponse = await r.json(); // ✅ typed
       setRes(data);
     } finally {
       setLoading(false);
@@ -35,7 +39,9 @@ export default function VerifyPage() {
             <textarea
               className="mt-2 h-48 w-full rounded-lg border p-3 font-mono text-sm"
               value={token}
-              onChange={(e) => setToken(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setToken(e.target.value)
+              } // ✅ typed event (optional butดี)
               placeholder="paste your token here"
             />
             <button

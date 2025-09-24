@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 
 /** error → message mapping */
@@ -53,15 +54,18 @@ export function ErrorModal({
   onClose: () => void;
 }) {
   const copy = getCopy(errorCode);
-  if (!copy) return null;
+  const open = Boolean(copy);
 
   useEffect(() => {
+    if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
+  }, [open, onClose]);
+
+  if (!open) return null;
 
   return (
     <div
@@ -76,7 +80,7 @@ export function ErrorModal({
         onClick={onClose}
       />
       {/* Modal */}
-      <div className="relative mx-4 w-full max-w-md rounded-2xl bg-white p-5 shadow-xl ring-1 ring-black/10">
+      <div className="relative mx-4 w/full max-w-md rounded-2xl bg-white p-5 shadow-xl ring-1 ring-black/10">
         <div className="flex items-start gap-3">
           <div className="mt-0.5">
             <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden>
@@ -88,11 +92,13 @@ export function ErrorModal({
           </div>
           <div className="flex-1">
             <h3 id="error-title" className="text-base font-semibold">
-              {copy.title}
+              {copy!.title}
             </h3>
-            <p className="mt-1 text-sm text-neutral-700">{copy.desc}</p>
-            {copy.hint && (
-              <p className="mt-2 text-xs text-neutral-600">Hint: {copy.hint}</p>
+            <p className="mt-1 text-sm text-neutral-700">{copy!.desc}</p>
+            {copy!.hint && (
+              <p className="mt-2 text-xs text-neutral-600">
+                Hint: {copy!.hint}
+              </p>
             )}
           </div>
           <button
@@ -100,7 +106,6 @@ export function ErrorModal({
             onClick={onClose}
             className="rounded-md p-1 hover:bg-neutral-100 active:scale-[0.98]"
           >
-            {/* X icon (plain SVG) */}
             <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden>
               <path
                 fill="currentColor"
@@ -117,12 +122,12 @@ export function ErrorModal({
           >
             Close
           </button>
-          <a
+          <Link
             href="/api/auth/google/start"
             className="inline-flex items-center rounded-lg bg-black px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
           >
             Retry Sign-in
-          </a>
+          </Link>
         </div>
       </div>
     </div>
